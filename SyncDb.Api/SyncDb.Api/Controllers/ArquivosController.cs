@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using SyncDb.Api.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,38 +16,47 @@ namespace SyncDb.Api.Controllers
     public class ArquivosController : ControllerBase
     {
         private readonly ILogger<ArquivosController> _logger;
+        private readonly AppSettings _appSettings;
 
-        public ArquivosController(ILogger<ArquivosController> logger)
+
+        public ArquivosController(ILogger<ArquivosController> logger, IOptions<AppSettings> appSettings)
         {
             _logger = logger;
+            _appSettings = appSettings.Value;
         }
 
         [HttpPost]
         public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, string cliente, string unidade)
         {
-
-            var path = Path.Combine(@"C:\temporario_desenvolvimento\", cliente, unidade, "in");
-
-            if (!Directory.Exists(path))
+            try
             {
-                Directory.CreateDirectory(path);
-            }
+                var path = Path.Combine(_appSettings.FileFolder, cliente, unidade, "in");
 
-            long size = files.Sum(f => f.Length);
-
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
+                if (!Directory.Exists(path))
                 {
-                    var filePath = Path.Combine(path, formFile.FileName);
+                    Directory.CreateDirectory(path);
+                }
 
-                    using (var stream = System.IO.File.Create(filePath))
+                long size = files.Sum(f => f.Length);
+
+                foreach (var formFile in files)
+                {
+                    if (formFile.Length > 0)
                     {
-                        await formFile.CopyToAsync(stream);
+                        var filePath = Path.Combine(path, formFile.FileName);
+
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
                     }
                 }
+                return Ok();
             }
-            return Ok();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet]
@@ -53,7 +64,7 @@ namespace SyncDb.Api.Controllers
         {
             try
             {
-                var path = Path.Combine(@"C:\temporario_desenvolvimento\", cliente, unidade, "out");
+                var path = Path.Combine(_appSettings.FileFolder, cliente, unidade, "out");
 
                 if (Directory.Exists(path))
                 {
@@ -72,7 +83,7 @@ namespace SyncDb.Api.Controllers
         {
             try
             {
-                var path = Path.Combine(@"C:\temporario_desenvolvimento\", cliente, unidade, "out");
+                var path = Path.Combine(_appSettings.FileFolder, cliente, unidade, "out");
                 if (Directory.Exists(path))
                 {
                     int quantidade = Directory.GetFiles(path).Count();

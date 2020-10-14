@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SyncDb.Api.Model;
 
 namespace SyncDb.Api
 {
@@ -20,6 +21,10 @@ namespace SyncDb.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //Acessando o AppSetting
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +57,9 @@ namespace SyncDb.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
