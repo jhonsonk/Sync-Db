@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncDb.Api", "SyncDb.Api\SyncDb.Api.csproj", "{AADA5CC8-551C-4032-B2A3-CE986D670736}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AADA5CC8-551C-4032-B2A3-CE986D670736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AADA5CC8-551C-4032-B2A3-CE986D670736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AADA5CC8-551C-4032-B2A3-CE986D670736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AADA5CC8-551C-4032-B2A3-CE986D670736}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {395C36E0-608C-43A2-BFD5-1633CEFB878C}
+	EndGlobalSection
+EndGlobal
